@@ -1,1 +1,1 @@
-# Shiguresayo.github.io
+# .github.io
