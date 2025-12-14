@@ -165,11 +165,6 @@ h1 {
 .inner {
 	padding: 20px 15px;
 }
-aside {
-	width: 100%;
-	float: none;
-}
-
 .profile {
   display: flex;
   gap: 30px;
@@ -184,6 +179,10 @@ aside {
 
 .profile-text {
   flex: 1;
+}
+aside {
+	width: 100%;
+	float: none;
 }
 
 #side-inner {
