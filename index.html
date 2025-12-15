@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>小夜時雨のリンク集</title>
+<title>小夜時雨リンク集</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 body {
@@ -18,7 +18,7 @@ body {
 }
 
 #outer {
-  max-width: 1200px;
+  max-width: 1300px;
   margin: auto;
   background-color: #fff;
   border-radius: 10px;
@@ -48,26 +48,28 @@ header h1 {
 .profile {
   display: flex;
   gap: 20px;
-  align-items: flex-start;
+  flex: 1;
+  overflow: hidden;
 }
 
 /* 左カラム：プロフィール画像 */
 .profile-left {
   flex-shrink: 0;
-  width: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .profile-left img {
-  width: 150px;            /* カラム幅いっぱいに表示 */
-  height: auto;           /* 縦横比維持 */
+  width: 500px;       /* PCで大きく表示 */
+  max-width: none;     /* 最大幅制限解除 */
+  height: auto;
   border-radius: 12px;
   object-fit: contain;
+  margin-bottom: 10px;
 }
 
-/* 中央カラム：自己紹介＋リンク集 */
+/* 中央カラム */
 .profile-center {
   flex: 1;
   display: flex;
@@ -108,14 +110,45 @@ a:hover {
   align-items: center;
 }
 
-/* スロット */
-.reel-container { display:flex; justify-content:center; gap:10px; margin-top:10px; }
-.reel-wrapper { width:100px; height:100px; overflow:hidden; border:2px solid #333; border-radius:8px; }
-.reel-inner { display:flex; flex-direction:column; }
-.reel-inner img { width:100px; height:100px; }
+.reel-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
 
-#startBtn { display:block; margin:10px auto; padding:8px 16px; font-size:14px; }
-#result { text-align:center; font-size:18px; margin-top:10px; font-weight:bold; min-height:30px; }
+.reel-wrapper {
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border: 2px solid #333;
+  border-radius: 8px;
+}
+
+.reel-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.reel-inner img {
+  width: 100px;
+  height: 100px;
+}
+
+#startBtn {
+  display: block;
+  margin: 10px auto;
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+#result {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 10px;
+  font-weight: bold;
+  min-height: 30px;
+}
 
 /* Footer */
 footer {
@@ -127,25 +160,23 @@ footer {
   font-size: 12px;
 }
 
-/* レスポンシブ */
-@media screen and (max-width: 1200px) {
+/* レスポンシブ：幅700以下は縮小 */
+@media screen and (max-width: 700px) {
   .profile {
     flex-direction: column;
     align-items: center;
   }
 
-  .profile-left, .profile-right {
+  .profile-left, .profile-center, .profile-right {
     width: 100%;
     max-width: 400px;
     margin-bottom: 20px;
   }
 
-  .profile-center {
-    width: 100%;
-  }
-
   .profile-left img {
-    max-height: 25vh;
+    width: 50%;       /* カラム幅の半分 */
+    max-width: 200px; /* 最大200pxまで */
+    height: auto;
   }
 }
 </style>
@@ -160,12 +191,10 @@ footer {
 </header>
 
 <main class="profile">
-  <!-- 左カラム：プロフィール画像 -->
   <div class="profile-left">
     <img src="maid_400x400.jpg" alt="プロフィール画像">
   </div>
 
-  <!-- 中央カラム：自己紹介＋リンク集 -->
   <div class="profile-center">
     <div class="profile-text">
       <section>
@@ -185,7 +214,6 @@ footer {
     </div>
   </div>
 
-  <!-- 右カラム：パモスロット -->
   <div class="profile-right">
     <h4>パモスロット</h4>
     <div class="reel-container">
@@ -202,58 +230,5 @@ footer {
   小夜時雨のリンク集 2025 12
 </footer>
 </div>
-
-<script>
-const images = ["pamo1.jpg","pamo2.jpg","pamo3.jpg"];
-const reelInners = document.querySelectorAll(".reel-inner");
-const btn = document.getElementById("startBtn");
-const resultDiv = document.getElementById("result");
-
-let positions = [0,0,0];
-
-btn.addEventListener("click", () => {
-    btn.disabled = true;
-    resultDiv.textContent = "";
-
-    const speed = 25;
-    const spinFrames = 50;
-    const stopDelays = [0, 10, 20];
-    let frame = 0;
-    let stopped = [false, false, false];
-
-    function animate() {
-        reelInners.forEach((inner, i) => {
-            if(!stopped[i]){
-                positions[i] += speed;
-                positions[i] %= images.length*100;
-                inner.style.transform = `translateY(-${Math.floor(positions[i])}px)`;
-            }
-        });
-
-        frame++;
-
-        reelInners.forEach((inner, i) => {
-            if(!stopped[i] && frame >= spinFrames + stopDelays[i]){
-                const finalIndex = Math.floor(Math.random()*images.length);
-                positions[i] = finalIndex*100;
-                inner.style.transform = `translateY(-${positions[i]}px)`;
-                stopped[i] = true;
-            }
-        });
-
-        if(stopped.every(v => v)){
-            const first = positions[0]/100;
-            const allSame = positions.every(p => p/100 === first);
-            resultDiv.textContent = allSame ? "当たり！🎉" : "はずれ";
-            btn.disabled = false;
-        } else {
-            requestAnimationFrame(animate);
-        }
-    }
-
-    animate();
-});
-</script>
-
 </body>
 </html>
