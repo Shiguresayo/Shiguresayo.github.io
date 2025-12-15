@@ -277,7 +277,7 @@ btn.addEventListener("click", () => {
         if(finishedCount === reels.length){
           // 全リール停止後に判定
           if(indices.every((v,_,arr)=>v===arr[0])){
-            resultDiv.textContent = "当たり！🎉";
+            resultDiv.textContent = "当たり";
           } else {
             resultDiv.textContent = "はずれ";
           }
