@@ -55,17 +55,17 @@ header h1 {
 /* 左カラム：プロフィール画像 */
 .profile-left {
   flex-shrink: 0;
+  width: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .profile-left img {
-  width: 400px;       /* PCで大きく表示 */
-  max-width: none;     /* 最大幅制限解除 */
-  height: auto;
+  width: 400px;
+  height: 400px;
   border-radius: 12px;
-  object-fit: contain;
+  object-fit: cover;
   margin-bottom: 10px;
 }
 
@@ -160,8 +160,8 @@ footer {
   font-size: 12px;
 }
 
-/* レスポンシブ：幅700以下は縮小 */
-@media screen and (max-width: 700px) {
+/* レスポンシブ */
+@media screen and (max-width: 1300px) {
   .profile {
     flex-direction: column;
     align-items: center;
@@ -174,8 +174,7 @@ footer {
   }
 
   .profile-left img {
-    width: 50%;       /* カラム幅の半分 */
-    max-width: 200px; /* 最大200pxまで */
+    width: 80%; /* スマホで少し縮小 */
     height: auto;
   }
 }
@@ -191,17 +190,18 @@ footer {
 </header>
 
 <main class="profile">
+  <!-- 左カラム：プロフィール画像 -->
   <div class="profile-left">
     <img src="maid_400x400.jpg" alt="プロフィール画像">
   </div>
 
+  <!-- 中央カラム -->
   <div class="profile-center">
     <div class="profile-text">
       <section>
         <h2>自己紹介</h2>
         <p>女装したりぶいちゃしたり将棋指したり</p>
       </section>
-
       <section class="links">
         <h3>リンク集</h3>
         <ul>
@@ -214,6 +214,7 @@ footer {
     </div>
   </div>
 
+  <!-- 右カラム：パモスロット -->
   <div class="profile-right">
     <h4>パモスロット</h4>
     <div class="reel-container">
@@ -230,5 +231,60 @@ footer {
   小夜時雨のリンク集 2025 12
 </footer>
 </div>
+
+<script>
+const images = ["pamo1.jpg","pamo2.jpg","pamo3.jpg"];
+const reelInners = document.querySelectorAll(".reel-inner");
+const btn = document.getElementById("startBtn");
+const resultDiv = document.getElementById("result");
+
+let positions = [0,0,0];
+
+btn.addEventListener("click", () => {
+    btn.disabled = true;
+    resultDiv.textContent = "";
+
+    const speed = 25;
+    const spinFrames = 50;
+    const stopDelays = [0, 10, 20];
+    let frame = 0;
+    let stopped = [false, false, false];
+
+    function animate() {
+        reelInners.forEach((inner, i) => {
+            const imgHeight = inner.querySelector('img').clientHeight; // 動的に高さ取得
+            if(!stopped[i]){
+                positions[i] += speed;
+                positions[i] %= images.length * imgHeight;
+                inner.style.transform = `translateY(-${Math.floor(positions[i])}px)`;
+            }
+        });
+
+        frame++;
+
+        reelInners.forEach((inner, i) => {
+            const imgHeight = inner.querySelector('img').clientHeight;
+            if(!stopped[i] && frame >= spinFrames + stopDelays[i]){
+                const finalIndex = Math.floor(Math.random()*images.length);
+                positions[i] = finalIndex * imgHeight;
+                inner.style.transform = `translateY(-${positions[i]}px)`;
+                stopped[i] = true;
+            }
+        });
+
+        if(stopped.every(v => v)){
+            const first = Math.round(positions[0]/reelInners[0].querySelector('img').clientHeight);
+            const allSame = positions.every((p,i) => Math.round(p/reelInners[i].querySelector('img').clientHeight) === first);
+            resultDiv.textContent = allSame ? "当たり！🎉" : "はずれ";
+            btn.disabled = false;
+        } else {
+            requestAnimationFrame(animate);
+        }
+    }
+
+    animate();
+});
+</script>
+
 </body>
 </html>
