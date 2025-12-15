@@ -13,18 +13,18 @@ body {
   background-size: cover;
   background-color: #afeeee;
   margin: 0;
-  line-height: 1.4;
   font-family: sans-serif;
+  line-height: 1.4;
 }
 
 #outer {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: auto;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   padding: 20px;
-  min-height: 90vh; /* 画面に収める */
+  min-height: 90vh;
   display: flex;
   flex-direction: column;
 }
@@ -44,35 +44,39 @@ header h1 {
   font-size: 14px;
 }
 
-/* メイン部分を左右2カラムに */
+/* メイン3カラム */
 .profile {
   display: flex;
   gap: 20px;
-  flex: 1;
-  overflow: hidden;
+  align-items: flex-start;
 }
 
-/* 左側：プロフィール＋リンク集 */
+/* 左カラム：プロフィール画像 */
 .profile-left {
-  flex: 1;
+  flex-shrink: 0;
+  width: 250px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  align-items: center;
 }
 
 .profile-left img {
   width: auto;
-  max-height: 35vh;
+  height: auto;
+  max-width: 100%;
+  max-height: 30vh;
   border-radius: 12px;
-  margin-bottom: 10px;
+  object-fit: contain;
 }
 
-.profile-text {
-  overflow-y: auto;
-  padding-right: 10px;
+/* 中央カラム：自己紹介＋リンク集 */
+.profile-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.profile-text h2, .profile-text h3, .profile-text h4 {
+.profile-text h2, .profile-text h3 {
   margin-top: 0;
   border-bottom: 1px solid #999;
   font-size: 16px;
@@ -97,18 +101,21 @@ a:hover {
   text-decoration: underline;
 }
 
-/* 右側：パモスロット */
+/* 右カラム：パモスロット */
 .profile-right {
+  flex-shrink: 0;
   width: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.reel-container { display:flex; justify-content:center; gap:10px; margin-top:10px;}
-.reel-wrapper { width:100px; height:100px; overflow:hidden; border:2px solid #333; border-radius:8px;}
+/* スロット */
+.reel-container { display:flex; justify-content:center; gap:10px; margin-top:10px; }
+.reel-wrapper { width:100px; height:100px; overflow:hidden; border:2px solid #333; border-radius:8px; }
 .reel-inner { display:flex; flex-direction:column; }
 .reel-inner img { width:100px; height:100px; }
+
 #startBtn { display:block; margin:10px auto; padding:8px 16px; font-size:14px; }
 #result { text-align:center; font-size:18px; margin-top:10px; font-weight:bold; min-height:30px; }
 
@@ -123,16 +130,20 @@ footer {
 }
 
 /* レスポンシブ */
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1200px) {
   .profile {
     flex-direction: column;
     align-items: center;
   }
 
-  .profile-right {
+  .profile-left, .profile-right {
     width: 100%;
     max-width: 400px;
-    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .profile-center {
+    width: 100%;
   }
 
   .profile-left img {
@@ -151,11 +162,13 @@ footer {
 </header>
 
 <main class="profile">
-  <!-- 左側：プロフィール＋リンク集 -->
+  <!-- 左カラム：プロフィール画像 -->
   <div class="profile-left">
-  <img src="maid_400x400.jpg" alt="プロフィール画像"
-     style="width:auto; height:auto; max-width:250px; max-height:250px; border-radius:12px; margin-bottom:10px;">
+    <img src="maid_400x400.jpg" alt="プロフィール画像">
+  </div>
 
+  <!-- 中央カラム：自己紹介＋リンク集 -->
+  <div class="profile-center">
     <div class="profile-text">
       <section>
         <h2>自己紹介</h2>
@@ -169,13 +182,13 @@ footer {
           <li><a href="https://x.com/yashimura_32" target="_blank">twitter</a></li>
           <li><a href="https://note.com/yashimura_32" target="_blank">note</a></li>
           <li><a href="https://vrchat.com/home/user/usr_a262ead3-3eee-4c93-9977-dc823f8c2078" target="_blank">VRChat</a></li>
+          <li><a href="slot.html" target="_blank">パモスロット</a></li>
         </ul>
       </section>
     </div>
   </div>
 
-  <!-- 右側：パモスロット埋め込み -->
-  
+  <!-- 右カラム：パモスロット -->
   <div class="profile-right">
     <h4>パモスロット</h4>
     <div class="reel-container">
