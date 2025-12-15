@@ -251,7 +251,7 @@ btn.addEventListener("click", () => {
             if(!stopped[i]){
                 positions[i] += speed;
                 positions[i] %= images.length*100;
-                inner.style.transform = `translateY(-${Math.floor(positions[i])}px)`;
+                inner.style.transform = `translateY(${Math.floor(positions[i])}px)`;
             }
         });
 
