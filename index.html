@@ -49,13 +49,12 @@ header h1 {
   display: flex;
   gap: 20px;
   flex: 1;
-  overflow: hidden;
 }
 
 /* 左カラム：プロフィール画像 */
 .profile-left {
   flex-shrink: 0;
-  width: 400px;      
+  width: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -71,9 +70,9 @@ header h1 {
 
 /* 中央カラム：自己紹介＋リンク集 */
 .profile-center {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .profile-text h2, .profile-text h3 {
@@ -110,7 +109,6 @@ a:hover {
   align-items: center;
 }
 
-/* スロット横並び */
 .reel-container {
   display: flex;
   justify-content: center;
@@ -128,7 +126,7 @@ a:hover {
 
 .reel-inner {
   display: flex;
-  flex-direction: row; /* 横並びに変更 */
+  flex-direction: column; /* 縦回転 */
 }
 
 .reel-inner img {
@@ -175,8 +173,7 @@ footer {
   }
 
   .profile-left img {
-    width: 50%;
-    max-width: 200px;
+    width: 80%;
     height: auto;
   }
 }
@@ -185,19 +182,16 @@ footer {
 
 <body>
 <div id="outer">
-
 <header>
   <h1>小夜時雨のリンク集</h1>
   <p class="description">さよくんだよ〜</p>
 </header>
 
 <main class="profile">
-  <!-- 左カラム：プロフィール画像 -->
   <div class="profile-left">
     <img src="maid_400x400.jpg" alt="プロフィール画像">
   </div>
 
-  <!-- 中央カラム：自己紹介＋リンク集 -->
   <div class="profile-center">
     <div class="profile-text">
       <section>
@@ -217,7 +211,6 @@ footer {
     </div>
   </div>
 
-  <!-- 右カラム：パモスロット -->
   <div class="profile-right">
     <h4>パモスロット</h4>
     <div class="reel-container">
@@ -258,7 +251,7 @@ btn.addEventListener("click", () => {
             if(!stopped[i]){
                 positions[i] += speed;
                 positions[i] %= images.length*100;
-                inner.style.transform = `translateX(-${Math.floor(positions[i])}px)`;
+                inner.style.transform = `translateY(-${Math.floor(positions[i])}px)`;
             }
         });
 
@@ -268,7 +261,7 @@ btn.addEventListener("click", () => {
             if(!stopped[i] && frame >= spinFrames + stopDelays[i]){
                 const finalIndex = Math.floor(Math.random()*images.length);
                 positions[i] = finalIndex*100;
-                inner.style.transform = `translateX(-${positions[i]}px)`;
+                inner.style.transform = `translateY(-${positions[i]}px)`;
                 stopped[i] = true;
             }
         });
