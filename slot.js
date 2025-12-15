@@ -1,56 +1,51 @@
 const images = ["pamo1.jpg","pamo2.jpg","pamo3.jpg"];
-const reelInners = document.querySelectorAll(".reel-inner");
+const reels = document.querySelectorAll(".reel-inner");
 const btn = document.getElementById("startBtn");
 const resultDiv = document.getElementById("result");
 
-let positions = [0,0,0];
-const imgHeight = 100; // スロット画像の高さ
+let indices = [0,0,0];
+
+// 初期表示
+reels.forEach((reel, i) => {
+  const imgs = reel.querySelectorAll("img");
+  imgs.forEach((img, idx) => img.style.display = (idx === indices[i]) ? "block" : "none");
+});
 
 btn.addEventListener("click", () => {
-    btn.disabled = true;
-    resultDiv.textContent = "";
+  btn.disabled = true;
+  resultDiv.textContent = "";
 
-    const speed = 20;      // 回転速度
-    const spinFrames = 50; // スピン時間
-    const stopDelays = [0, 10, 20]; 
-    let frame = 0;
-    let stopped = [false, false, false];
+  const intervalTime = 50; // 高速回転
+  const startDelays = [0, 200, 400]; // 各リールのスタート遅延(ms)
+  const stopDelays  = [1000, 1500, 2000]; // 各リールの停止タイミング(ms)
+  
+  reels.forEach((reel, i) => {
+    let elapsed = 0;
+    let interval;
 
-    function animate() {
-        reelInners.forEach((inner, i) => {
-            if(!stopped[i]){
-                positions[i] += speed;
+    setTimeout(() => { // スタート遅延
+      interval = setInterval(() => {
+        indices[i] = (indices[i]+1) % images.length;
+        const imgs = reel.querySelectorAll("img");
+        imgs.forEach((img, idx) => img.style.display = (idx === indices[i]) ? "block" : "none");
 
-                // 下まで行ったらリセット
-                if(positions[i] >= images.length * imgHeight){
-                    positions[i] = 0;
-                }
+        elapsed += intervalTime;
+        if(elapsed >= stopDelays[i]) { // 停止タイミング
+          clearInterval(interval);
+          // 最終的にランダム表示
+          const finalIndex = Math.floor(Math.random()*images.length);
+          imgs.forEach((img, idx) => img.style.display = (idx === finalIndex) ? "block" : "none");
+          indices[i] = finalIndex;
 
-                inner.style.transform = `translateY(-${Math.floor(positions[i])}px)`;
-            }
-        });
-
-        frame++;
-
-        // 停止判定
-        reelInners.forEach((inner, i) => {
-            if(!stopped[i] && frame >= spinFrames + stopDelays[i]){
-                const finalIndex = Math.floor(Math.random() * images.length);
-                positions[i] = finalIndex * imgHeight;
-                inner.style.transform = `translateY(-${positions[i]}px)`;
-                stopped[i] = true;
-            }
-        });
-
-        if(stopped.every(v => v)){
-            const first = positions[0]/imgHeight;
-            const allSame = positions.every(p => p/imgHeight === first);
-            resultDiv.textContent = allSame ? "当たり！🎉" : "はずれ";
+          // 全リール停止後の結果判定
+          if(indices.every((v, _, arr) => v === arr[0])) {
+            resultDiv.textContent = "当たり！🎉";
+          } else if(reels.every((r,j) => elapsed >= stopDelays[j])) {
+            resultDiv.textContent = "はずれ";
             btn.disabled = false;
-        } else {
-            requestAnimationFrame(animate);
+          }
         }
-    }
-
-    animate();
+      }, intervalTime);
+    }, startDelays[i]);
+  });
 });
