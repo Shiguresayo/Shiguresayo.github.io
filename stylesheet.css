@@ -57,11 +57,11 @@ header h1 {
 }
 
 .profile-left img {
-  width: 50%;
+  width: 150px;
   height: auto;
   border-radius: 12px;
-  margin-bottom: 10px;
   object-fit: contain;
+  margin-bottom: 10px;
 }
 
 /* 中央カラム：自己紹介＋リンク集 */
@@ -162,11 +162,13 @@ footer {
 
   .profile-left, .profile-center, .profile-right {
     width: 100%;
-    max-width: 600px;
+    max-width: 400px;
     margin-bottom: 20px;
   }
 
   .profile-left img {
-    max-height: 40vh;
+     width: 50%; /* スマホ時はカラム幅の半分 */
+    max-width: 200px;
+    height: auto;
   }
 }
