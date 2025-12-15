@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>スロット風リール（滑らか減速）</title>
+<title>スロット風リール（高速→減速→停止）</title>
 <style>
   .reel-container {
     display: flex;
@@ -74,55 +74,27 @@ const reelInners = document.querySelectorAll(".reel-inner");
 const btn = document.getElementById("startBtn");
 const resultDiv = document.getElementById("result");
 
-let currentIndices = [0,0,0];
+// 前回位置保持
+let positions = [0,0,0]; // px単位
 
 btn.addEventListener("click", () => {
     btn.disabled = true;
     resultDiv.textContent = "";
 
-    const baseSpeed = 4; // 通常回転速度(px/frame)
-    const totalSpins = 50; // 回転フレーム数
-    const stopDelays = [0, 15, 30]; // 左→右に順番に減速開始
+    const baseSpeed = 10;  // 高速回転(px/frame)
+    const stopDelays = [0, 15, 30]; // 左→右順に減速開始
+    const decelerationFrames = 30; // 減速期間フレーム数
 
     let frame = 0;
+    let speeds = [baseSpeed, baseSpeed, baseSpeed];
 
-    function animate(){
+    function animate() {
         reelInners.forEach((inner, i) => {
-            // 減速タイミング
-            let speed = baseSpeed;
-            if(frame > stopDelays[i]){
-                const progress = Math.min((frame - stopDelays[i]) / 20, 1); // 0→1の割合
-                speed = baseSpeed * (1 - progress*progress); // 二次イージングで滑らか減速
+            // 減速判定
+            if(frame >= stopDelays[i]){
+                const t = Math.min((frame - stopDelays[i])/decelerationFrames, 1); // 0→1
+                speeds[i] = baseSpeed * (1 - t*t); // 二次イージングで滑らか減速
             }
 
-            // 現在位置更新
-            currentIndices[i] += speed/100; // 1画像=100px
-            currentIndices[i] %= images.length;
-            const translateY = Math.floor(currentIndices[i]*100);
-            inner.style.transform = `translateY(-${translateY}px)`;
-        });
-
-        frame++;
-        if(frame < totalSpins + stopDelays[2] + 20){ // 全リール減速完了まで
-            requestAnimationFrame(animate);
-        } else {
-            // 最後にランダムで止める
-            reelInners.forEach((inner, i) => {
-                const finalIndex = Math.floor(Math.random()*images.length);
-                currentIndices[i] = finalIndex;
-                inner.style.transform = `translateY(-${finalIndex*100}px)`;
-            });
-            // 当たり判定
-            const first = currentIndices[0];
-            const allSame = currentIndices.every(idx => idx === first);
-            resultDiv.textContent = allSame ? "当たり！🎉" : "はずれ…😢";
-            btn.disabled = false;
-        }
-    }
-
-    animate();
-});
-</script>
-
-</body>
-</html>
+            positions[i] += speeds[i];
+            positions[i] %= images.length
