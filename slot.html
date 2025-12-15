@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>スロット風リール（高速→停止）</title>
+<title>スロット風リール（順次停止）</title>
 <style>
   .reel-container { display:flex; justify-content:center; gap:10px; margin:50px;}
   .reel-wrapper { width:100px; height:100px; overflow:hidden; border:2px solid #333; border-radius:8px;}
@@ -35,42 +35,47 @@ const reelInners = document.querySelectorAll(".reel-inner");
 const btn = document.getElementById("startBtn");
 const resultDiv = document.getElementById("result");
 
-// 前回位置(px)を保持
-let positions = [0,0,0];
+let positions = [0,0,0]; // px単位の現在位置
 
 btn.addEventListener("click", () => {
     btn.disabled = true;
     resultDiv.textContent = "";
 
-    const speed = 15; // 高速回転(px/frame)
-    const spins = 50; // 回転フレーム数
-
+    const speed = 25; // 高速回転(px/frame)
+    const spinFrames = 50; // 回転フレーム数
+    const stopDelays = [0, 10, 20]; // 左→右順に止まるフレーム差
     let frame = 0;
+    let stopped = [false, false, false]; // 各リールの停止フラグ
 
     function animate() {
-        reelInners.forEach((inner,i) => {
-            positions[i] += speed;
-            positions[i] %= images.length*100; // ループ
-            inner.style.transform = `translateY(-${Math.floor(positions[i])}px)`;
+        reelInners.forEach((inner, i) => {
+            if(!stopped[i]){
+                positions[i] += speed;
+                positions[i] %= images.length*100; // ループ
+                inner.style.transform = `translateY(-${Math.floor(positions[i])}px)`;
+            }
         });
 
         frame++;
-        if(frame < spins){
-            requestAnimationFrame(animate);
-        } else {
-            // 停止時にランダムで最終位置
-            reelInners.forEach((inner,i)=>{
+
+        // リール順に停止判定
+        reelInners.forEach((inner, i) => {
+            if(!stopped[i] && frame >= spinFrames + stopDelays[i]){
                 const finalIndex = Math.floor(Math.random()*images.length);
                 positions[i] = finalIndex*100;
                 inner.style.transform = `translateY(-${positions[i]}px)`;
-            });
+                stopped[i] = true;
+            }
+        });
 
-            // 当たり判定
-            const firstIndex = positions[0]/100;
-            const allSame = positions.every(p => p/100 === firstIndex);
+        if(stopped.every(v => v)){
+            // 全リール停止 → 当たり判定
+            const first = positions[0]/100;
+            const allSame = positions.every(p => p/100 === first);
             resultDiv.textContent = allSame ? "当たり！🎉" : "はずれ…😢";
-
             btn.disabled = false;
+        } else {
+            requestAnimationFrame(animate);
         }
     }
 
