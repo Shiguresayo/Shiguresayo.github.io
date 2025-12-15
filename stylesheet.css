@@ -1,5 +1,10 @@
-@charset "UTF-8";
-
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>小夜時雨のリンク集</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
 body {
   background-image: url("maid.jpg");
   background-repeat: no-repeat;
@@ -8,60 +13,79 @@ body {
   background-size: cover;
   background-color: #afeeee;
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.4;
+  font-family: sans-serif;
 }
 
 #outer {
   max-width: 1000px;
-  margin: 2% auto;
+  margin: auto;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  padding: 30px;
+  padding: 20px;
+  height: 90vh; /* 画面に収める */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 header h1 {
   margin: 0;
-  font-size: 28px;
+  font-size: 24px;
+  text-align: center;
 }
 
 .description {
+  text-align: center;
   margin-top: 5px;
   color: #666;
+  font-size: 14px;
 }
 
+/* メイン部分 */
 .profile {
   display: flex;
-  gap: 30px;
-  margin-top: 30px;
+  gap: 20px;
+  flex: 1;
   align-items: flex-start;
+  overflow: hidden; /* 内容がはみ出さない */
+}
+
+.profile-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
 }
 
 .profile img {
-  width: 250px;
-  height: auto;
+  width: auto;
+  max-height: 35vh;
   border-radius: 12px;
+  margin-bottom: 10px;
 }
 
 .profile-text {
-  flex: 1;
+  overflow: auto; /* 内容が長い場合のみスクロール */
+  padding-right: 10px;
 }
 
-h2 {
+.profile-text h2, .profile-text h3, .profile-text h4 {
   margin-top: 0;
   border-bottom: 1px solid #999;
-}
-
-h3 {
-  margin-top: 30px;
+  font-size: 16px;
 }
 
 .links ul {
   padding-left: 1em;
+  margin: 5px 0;
 }
 
 .links li {
-  margin: 5px 0;
+  margin: 3px 0;
+  font-size: 14px;
 }
 
 a {
@@ -73,21 +97,158 @@ a:hover {
   text-decoration: underline;
 }
 
+/* 右側パモスロットを横幅400pxに収める */
+.profile-right {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.reel-container { display:flex; justify-content:center; gap:10px; margin-top:10px;}
+.reel-wrapper { width:100px; height:100px; overflow:hidden; border:2px solid #333; border-radius:8px;}
+.reel-inner { display:flex; flex-direction:column; }
+.reel-inner img { width:100px; height:100px; }
+#startBtn { display:block; margin:10px auto; padding:8px 16px; font-size:14px; }
+#result { text-align:center; font-size:18px; margin-top:10px; font-weight:bold; min-height:30px; }
+
+/* Footer */
 footer {
-  margin-top: 40px;
-  padding-top: 20px;
+  margin-top: 10px;
+  padding-top: 10px;
   text-align: center;
   color: #444;
   border-top: 1px solid #ddd;
+  font-size: 12px;
 }
 
+/* レスポンシブ */
 @media screen and (max-width: 768px) {
   .profile {
     flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-right {
+    width: 100%;
+    max-width: 400px;
+    margin-top: 20px;
   }
 
   .profile img {
+    max-height: 25vh;
+  }
+
+  .profile-text {
     width: 100%;
-    max-width: 300px;
   }
 }
+</style>
+</head>
+
+<body>
+<div id="outer">
+
+<header>
+  <h1>小夜時雨のリンク集</h1>
+  <p class="description">さよくんだよ〜</p>
+</header>
+
+<main class="profile">
+  <!-- 左側：プロフィール＋リンク集 -->
+  <div class="profile-left">
+    <img src="maid_400x400.jpg" alt="プロフィール画像">
+    <div class="profile-text">
+      <section>
+        <h2>自己紹介</h2>
+        <p>女装したりぶいちゃしたり将棋指したり</p>
+      </section>
+      <section class="links">
+        <h3>リンク集</h3>
+        <ul>
+          <li><a href="https://github.com/Shiguresayo/sayokun" target="_blank">github</a></li>
+          <li><a href="https://x.com/yashimura_32" target="_blank">twitter</a></li>
+          <li><a href="https://note.com/yashimura_32" target="_blank">note</a></li>
+          <li><a href="https://vrchat.com/home/user/usr_a262ead3-3eee-4c93-9977-dc823f8c2078" target="_blank">VRChat</a></li>
+        </ul>
+
+        <h4>ミニゲーム</h4>
+        <ul>
+          <li><a href="slot.html" target="_blank">パモスロット</a></li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <!-- 右側：パモスロットリンク -->
+  <div class="profile-right">
+    <h3>パモスロット</h3>
+    <div class="reel-container">
+      <div class="reel-wrapper"><div class="reel-inner"><img src="pamo1.jpg"><img src="pamo2.jpg"><img src="pamo3.jpg"></div></div>
+      <div class="reel-wrapper"><div class="reel-inner"><img src="pamo1.jpg"><img src="pamo2.jpg"><img src="pamo3.jpg"></div></div>
+      <div class="reel-wrapper"><div class="reel-inner"><img src="pamo1.jpg"><img src="pamo2.jpg"><img src="pamo3.jpg"></div></div>
+    </div>
+    <button id="startBtn">スタート</button>
+    <div id="result"></div>
+  </div>
+</main>
+
+<footer>
+  小夜時雨のリンク集 2025 12
+</footer>
+</div>
+
+<script>
+const images = ["pamo1.jpg","pamo2.jpg","pamo3.jpg"];
+const reelInners = document.querySelectorAll(".reel-inner");
+const btn = document.getElementById("startBtn");
+const resultDiv = document.getElementById("result");
+
+let positions = [0,0,0];
+
+btn.addEventListener("click", () => {
+    btn.disabled = true;
+    resultDiv.textContent = "";
+
+    const speed = 25;
+    const spinFrames = 50;
+    const stopDelays = [0, 10, 20];
+    let frame = 0;
+    let stopped = [false, false, false];
+
+    function animate() {
+        reelInners.forEach((inner, i) => {
+            if(!stopped[i]){
+                positions[i] += speed;
+                positions[i] %= images.length*100;
+                inner.style.transform = `translateY(-${Math.floor(positions[i])}px)`;
+            }
+        });
+
+        frame++;
+
+        reelInners.forEach((inner, i) => {
+            if(!stopped[i] && frame >= spinFrames + stopDelays[i]){
+                const finalIndex = Math.floor(Math.random()*images.length);
+                positions[i] = finalIndex*100;
+                inner.style.transform = `translateY(-${positions[i]}px)`;
+                stopped[i] = true;
+            }
+        });
+
+        if(stopped.every(v => v)){
+            const first = positions[0]/100;
+            const allSame = positions.every(p => p/100 === first);
+            resultDiv.textContent = allSame ? "当たり！🎉" : "はずれ";
+            btn.disabled = false;
+        } else {
+            requestAnimationFrame(animate);
+        }
+    }
+
+    animate();
+});
+</script>
+
+</body>
+</html>
