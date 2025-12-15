@@ -10,7 +10,18 @@
     gap: 10px;
     margin: 50px;
   }
-  .reel {
+  .reel-wrapper {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border: 2px solid #333;
+    border-radius: 8px;
+  }
+  .reel-inner {
+    display: flex;
+    flex-direction: column;
+  }
+  .reel-inner img {
     width: 100px;
     height: 100px;
   }
@@ -31,73 +42,95 @@
 <body>
 
 <div class="reel-container">
-  <img class="reel" src="pamo1.jpg" alt="リール1">
-  <img class="reel" src="pamo1.jpg" alt="リール2">
-  <img class="reel" src="pamo1.jpg" alt="リール3">
+  <div class="reel-wrapper">
+    <div class="reel-inner">
+      <img src="pamo1.jpg" alt="">
+      <img src="pamo2.jpg" alt="">
+      <img src="pamo3.jpg" alt="">
+    </div>
+  </div>
+  <div class="reel-wrapper">
+    <div class="reel-inner">
+      <img src="pamo1.jpg" alt="">
+      <img src="pamo2.jpg" alt="">
+      <img src="pamo3.jpg" alt="">
+    </div>
+  </div>
+  <div class="reel-wrapper">
+    <div class="reel-inner">
+      <img src="pamo1.jpg" alt="">
+      <img src="pamo2.jpg" alt="">
+      <img src="pamo3.jpg" alt="">
+    </div>
+  </div>
 </div>
+
 <button id="startBtn">スタート</button>
 <div id="result"></div>
 
 <script>
 const images = ["pamo1.jpg", "pamo2.jpg", "pamo3.jpg"];
-const reels = document.querySelectorAll(".reel");
+const reelWrappers = document.querySelectorAll(".reel-wrapper");
+const reelInners = document.querySelectorAll(".reel-inner");
 const btn = document.getElementById("startBtn");
 const resultDiv = document.getElementById("result");
 
-btn.addEventListener("click", () => {
-    btn.disabled = true; 
-    resultDiv.textContent = ""; 
+// 前回の位置保持
+let currentIndices = [0,0,0];
 
-    const interval = 100; 
-    const totalSpins = 30; 
-    const stopDelays = [0, 5, 10]; 
+btn.addEventListener("click", () => {
+    btn.disabled = true;
+    resultDiv.textContent = "";
+
+    const interval = 50; // アニメーション間隔
+    const totalSpins = 20; // 回転回数
+    const stopDelays = [0, 5, 10];
     let count = 0;
 
-    // 回転中は一定速度
     const reelInterval = setInterval(() => {
-        reels.forEach((reel, i) => {
+        reelInners.forEach((inner, i) => {
             if(count < totalSpins + stopDelays[i]){
-                const cycleIndex = (count + i) % images.length;
-                reel.src = images[cycleIndex];
+                currentIndices[i] = (currentIndices[i]+1)%images.length;
+                inner.style.transform = `translateY(-${currentIndices[i]*100}px)`;
             }
         });
+
         count++;
-        if(count >= totalSpins + stopDelays[reels.length -1]){
+        if(count >= totalSpins + stopDelays[reelInners.length-1]){
             clearInterval(reelInterval);
-            // 減速停止演出を順番に開始
-            reels.forEach((reel, i) => slowStop(reel, i));
+            // 減速停止演出
+            reelInners.forEach((inner, i) => slowStop(inner, i));
         }
     }, interval);
 
-    // 減速停止用関数
-    function slowStop(reel, reelIndex){
-        let delay = 50; // 最初の間隔
-        const steps = 5; // 減速段階
+    function slowStop(inner, reelIndex){
+        let delay = 50;
+        const steps = 5;
         let step = 0;
 
         function stepRotation(){
             if(step < steps){
-                const nextIndex = (Math.floor(Math.random()*images.length));
-                reel.src = images[nextIndex];
-                delay += 50; // 徐々に間隔を長く
+                currentIndices[reelIndex] = (currentIndices[reelIndex]+1)%images.length;
+                inner.style.transform = `translateY(-${currentIndices[reelIndex]*100}px)`;
+                delay += 50;
                 step++;
                 setTimeout(stepRotation, delay);
             } else {
-                // 最後に止める画像を決定
-                const finalIndex = Math.floor(Math.random() * images.length);
-                reel.src = images[finalIndex];
+                // 最後に止める画像をランダム
+                const finalIndex = Math.floor(Math.random()*images.length);
+                currentIndices[reelIndex] = finalIndex;
+                inner.style.transform = `translateY(-${finalIndex*100}px)`;
 
-                // 全部止まったら当たり判定
-                if(reelIndex === reels.length -1){
-                    const first = reels[0].src.split('/').pop();
-                    const allSame = Array.from(reels).every(r => r.src.includes(first));
+                // 全リール停止後に当たり判定
+                if(reelIndex === reelInners.length-1){
+                    const first = currentIndices[0];
+                    const allSame = currentIndices.every(idx => idx === first);
                     resultDiv.textContent = allSame ? "当たり！🎉" : "はずれ…😢";
                     btn.disabled = false;
                 }
             }
         }
-        // リールごとに少し遅らせて順番に減速
-        setTimeout(stepRotation, reelIndex * 200);
+        setTimeout(stepRotation, reelIndex*200);
     }
 });
 </script>
