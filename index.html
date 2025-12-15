@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>小夜時雨リンク集</title>
+<title>小夜時雨のリンク集</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 body {
@@ -55,7 +55,7 @@ header h1 {
 /* 左カラム：プロフィール画像 */
 .profile-left {
   flex-shrink: 0;
-  width: 400px;
+  width: 400px;      
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -69,11 +69,11 @@ header h1 {
   margin-bottom: 10px;
 }
 
-/* 中央カラム */
+/* 中央カラム：自己紹介＋リンク集 */
 .profile-center {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .profile-text h2, .profile-text h3 {
@@ -110,6 +110,7 @@ a:hover {
   align-items: center;
 }
 
+/* スロット横並び */
 .reel-container {
   display: flex;
   justify-content: center;
@@ -127,7 +128,7 @@ a:hover {
 
 .reel-inner {
   display: flex;
-  flex-direction: column;
+  flex-direction: row; /* 横並びに変更 */
 }
 
 .reel-inner img {
@@ -174,7 +175,8 @@ footer {
   }
 
   .profile-left img {
-    width: 80%; /* スマホで少し縮小 */
+    width: 50%;
+    max-width: 200px;
     height: auto;
   }
 }
@@ -195,13 +197,14 @@ footer {
     <img src="maid_400x400.jpg" alt="プロフィール画像">
   </div>
 
-  <!-- 中央カラム -->
+  <!-- 中央カラム：自己紹介＋リンク集 -->
   <div class="profile-center">
     <div class="profile-text">
       <section>
         <h2>自己紹介</h2>
         <p>女装したりぶいちゃしたり将棋指したり</p>
       </section>
+
       <section class="links">
         <h3>リンク集</h3>
         <ul>
@@ -252,29 +255,27 @@ btn.addEventListener("click", () => {
 
     function animate() {
         reelInners.forEach((inner, i) => {
-            const imgHeight = inner.querySelector('img').clientHeight; // 動的に高さ取得
             if(!stopped[i]){
                 positions[i] += speed;
-                positions[i] %= images.length * imgHeight;
-                inner.style.transform = `translateY(-${Math.floor(positions[i])}px)`;
+                positions[i] %= images.length*100;
+                inner.style.transform = `translateX(-${Math.floor(positions[i])}px)`;
             }
         });
 
         frame++;
 
         reelInners.forEach((inner, i) => {
-            const imgHeight = inner.querySelector('img').clientHeight;
             if(!stopped[i] && frame >= spinFrames + stopDelays[i]){
                 const finalIndex = Math.floor(Math.random()*images.length);
-                positions[i] = finalIndex * imgHeight;
-                inner.style.transform = `translateY(-${positions[i]}px)`;
+                positions[i] = finalIndex*100;
+                inner.style.transform = `translateX(-${positions[i]}px)`;
                 stopped[i] = true;
             }
         });
 
         if(stopped.every(v => v)){
-            const first = Math.round(positions[0]/reelInners[0].querySelector('img').clientHeight);
-            const allSame = positions.every((p,i) => Math.round(p/reelInners[i].querySelector('img').clientHeight) === first);
+            const first = positions[0]/100;
+            const allSame = positions.every(p => p/100 === first);
             resultDiv.textContent = allSame ? "当たり！🎉" : "はずれ";
             btn.disabled = false;
         } else {
