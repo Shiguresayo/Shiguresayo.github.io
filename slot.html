@@ -22,11 +22,11 @@
 </div>
 
 <button id="startBtn">スタート</button>
-<div id="result"></div>
+<div id="result" style="min-height:40px;"></div>
 
 <!-- リンク集 -->
 <div id="links">
-  <a href="https://example.com" target="_blank">私のリンク集はこちら</a>
+  <a href="https://example.com" target="_blank">リンク集に戻る</a>
 </div>
 
 <script>
@@ -72,7 +72,7 @@ btn.addEventListener("click", () => {
             // 全リール停止 → 当たり判定
             const first = positions[0]/100;
             const allSame = positions.every(p => p/100 === first);
-            resultDiv.textContent = allSame ? "当たり！🎉" : "はずれ…😢";
+            resultDiv.textContent = allSame ? "当たり！🎉" : "はずれ";
             btn.disabled = false;
         } else {
             requestAnimationFrame(animate);
