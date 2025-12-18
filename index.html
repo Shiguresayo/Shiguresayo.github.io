@@ -44,7 +44,7 @@ header h1 {
   font-size: 14px;
 }
 
-/* 横並びメイン */
+
 .profile {
   display: flex;
   gap: 20px;
@@ -52,7 +52,7 @@ header h1 {
   flex-wrap: nowrap;
 }
 
-/* 左カラム：プロフィール画像 */
+
 .profile-left {
   flex-shrink: 0;
   width: 400px;
@@ -68,7 +68,7 @@ header h1 {
   object-fit: cover;
 }
 
-/* 中央カラム：自己紹介＋リンク集 */
+
 .profile-center {
   flex: 1;
   display: flex;
@@ -100,7 +100,7 @@ a:hover {
   text-decoration: underline;
 }
 
-/* 右カラム：パモスロット */
+
 .profile-right {
   flex-shrink: 0;
   width: 400px;
@@ -127,13 +127,13 @@ a:hover {
 
 .reel-inner {
   display: flex;
-  flex-direction: column; /* 縦回転 */
+  flex-direction: column;
 }
 
 .reel-inner img {
   width: 100px;
   height: 100px;
-  display: none; /* 最初は非表示 */
+  display: none;
 }
 
 #startBtn {
@@ -161,7 +161,7 @@ footer {
   font-size: 12px;
 }
 
-/* レスポンシブ調整 */
+
 @media screen and (max-width: 1200px) {
   .profile {
     flex-direction: column;
@@ -189,12 +189,12 @@ footer {
 </header>
 
 <main class="profile">
-  <!-- 左カラム：プロフィール画像 -->
+ 
   <div class="profile-left">
     <img src="maid_400x400.jpg" alt="プロフィール画像">
   </div>
 
-  <!-- 中央カラム：自己紹介＋リンク集 -->
+
   <div class="profile-center">
     <div class="profile-text">
       <section>
@@ -213,7 +213,7 @@ footer {
     </div>
   </div>
 
-  <!-- 右カラム：パモスロット -->
+
   <div class="profile-right">
     <h4>パモスロット</h4>
     <div class="reel-container">
@@ -237,10 +237,10 @@ const reels = document.querySelectorAll(".reel-inner");
 const btn = document.getElementById("startBtn");
 const resultDiv = document.getElementById("result");
 
-// 各リールの現在表示インデックス
+
 let indices = [0,0,0];
 
-// 初期表示
+
 reels.forEach((reel, i) => {
   const imgs = reel.querySelectorAll("img");
   imgs[indices[i]].style.display = "block";
@@ -250,7 +250,7 @@ btn.addEventListener("click", () => {
   btn.disabled = true;
   resultDiv.textContent = "";
 
-  const intervalTime = 50; // 回転速度
+  const intervalTime = 50; 
   const startDelays = [0, 200, 400]; // 開始タイミング（ms）
   const stopDelays  = [1500, 1800, 2100]; // 停止タイミング（ms）
 
@@ -267,7 +267,7 @@ btn.addEventListener("click", () => {
 
       setTimeout(() => {
         clearInterval(interval);
-        // 停止時の最終位置をランダム
+        
         const finalIndex = Math.floor(Math.random()*images.length);
         const imgs = reel.querySelectorAll("img");
         imgs.forEach((img, idx) => img.style.display = (idx === finalIndex) ? "block" : "none");
@@ -275,7 +275,7 @@ btn.addEventListener("click", () => {
 
         finishedCount++;
         if(finishedCount === reels.length){
-          // 全リール停止後に判定
+          
           if(indices.every((v,_,arr)=>v===arr[0])){
             resultDiv.textContent = "当たり";
           } else {
