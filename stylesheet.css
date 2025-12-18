@@ -39,7 +39,6 @@ header h1 {
   font-size: 14px;
 }
 
-/* メイン3カラム */
 .profile {
   display: flex;
   gap: 20px;
@@ -47,7 +46,6 @@ header h1 {
   overflow: hidden;
 }
 
-/* 左カラム：プロフィール画像 */
 .profile-left {
   flex-shrink: 0;
   width: 500px;      
@@ -61,14 +59,12 @@ header h1 {
   height: auto;
 }
 
-/* 中央カラム */
 .profile-center {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
-/* 右カラム */
 .profile-right {
   flex-shrink: 0;
   width: 400px;
@@ -77,7 +73,6 @@ header h1 {
   align-items: center;
 }
 
-/* パモスロット */
 .reel-container {
   display: flex;
   justify-content: center;
@@ -103,7 +98,6 @@ header h1 {
   height: 100px;
 }
 
-/* ボタン・結果表示 */
 #startBtn {
   display: block;
   margin: 10px auto;
@@ -129,7 +123,6 @@ footer {
   font-size: 12px;
 }
 
-/* レスポンシブ: 幅700px以下でスマホ用に縮小 */
 @media screen and (max-width: 700px) {
   .profile {
     flex-direction: column;
@@ -143,7 +136,7 @@ footer {
   }
 
   .profile-left img {
-    width: 50%; /* スマホ時はカラム幅の半分 */
+    width: 50%;
     max-width: 200px;
     height: auto;
   }
